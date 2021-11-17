@@ -3,14 +3,15 @@ import {PIZZA_SIZES, PIZZA_TOPPINGS } from '../data/constants.js';
 
 const orderSchema = mongoose.Schema({
 
-    customer: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'customer',
-        required:true
-    },
+
     pizzeria: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'pizzeria',
+        required:true
+    },
+    customer: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'customer',
         required:true
     },
     orderDate: { type:Date, required:true, default:Date.now},
@@ -23,4 +24,4 @@ const orderSchema = mongoose.Schema({
     collection: 'orders'
 });
 
-export default mongoose.model('Pizzeria', orderSchema);
+export default mongoose.model('Order', orderSchema);

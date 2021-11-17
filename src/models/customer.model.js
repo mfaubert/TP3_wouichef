@@ -1,14 +1,11 @@
 import mongoose from 'mongoose';
+import { PLANET_NAMES } from '../data/constants.js';
 
 const customerSchema = mongoose.Schema({
 
     name: { type:String, required:true },
     email: { type:String, unique:true, required:true },
-    planet: {         
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Planet', 
-        required:true 
-    }, 
+    planet: { type: String, required:true, enum:PLANET_NAMES },
     coord: {
         lon: { type:Number, required:true, min:-1000, max:1000 },
         lat: { type:Number, required:true, min:-1000, max:1000 }
@@ -17,7 +14,7 @@ const customerSchema = mongoose.Schema({
     birthday: { type:String, required:true },
     referalCode:String
 }, {
-    collection: 'pizzerias'
+    collection: 'customers'
 });
 
 export default mongoose.model('Customer', customerSchema);

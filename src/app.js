@@ -4,8 +4,12 @@ import database from './libs/database.js';
 
 import errorMiddleware from './middlewares/errors.js';
 
-import planetsRoutes from './routes/planets.routes.js';
-import explorationsRoutes from './routes/explorations.routes.js';
+//import planetsRoutes from './routes/planets.routes.js';
+//import explorationsRoutes from './routes/explorations.routes.js';
+
+import a from './models/customer.model.js'
+import b from './models/order.model.js'
+import c from './models/pizzeria.model.js'
 
 database();
 
@@ -20,8 +24,8 @@ app.use((req,res,next) => {
     next();
 });
 
-app.use('/planets', planetsRoutes);
-app.use('/explorations', explorationsRoutes);
+//app.use('/planets', planetsRoutes);
+//app.use('/explorations', explorationsRoutes);
 
 app.use(errorMiddleware);
 
