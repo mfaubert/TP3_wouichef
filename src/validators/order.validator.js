@@ -1,7 +1,7 @@
 import expressValidator from 'express-validator';
 const { body } = expressValidator;
 
-class PlanetValidators {
+class OrderValidators {
 
     partial(){
 
@@ -12,7 +12,7 @@ class PlanetValidators {
             body('temperature').optional()
                 .isNumeric().withMessage('la valeur doit etre numerique'),
             body('satellites').optional()
-                .isArray().withMessage('doivent etre une collection'),
+                .isArray().isin('doivent etre une collection'),
             body('position.x').optional()
                 .isFloat({min:-1000,max:1000}).withMessage('la position de x doit etre entre -1000 et 1000'),
             body('position.y').optional()
@@ -38,4 +38,4 @@ class PlanetValidators {
 
 }
 
-export default new PlanetValidators();
+export default new OrderValidators();
