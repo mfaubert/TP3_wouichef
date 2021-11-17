@@ -2,7 +2,6 @@ import express from 'express';
 import HttpError from 'http-errors';
 
 import OrderRepository from '../repositories/order.repository.js';
-import OrderValidators from '../validators/order.validator.js';
 import validator from '../middlewares/validator.js';
 
 const router = express.Router();

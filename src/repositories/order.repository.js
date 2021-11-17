@@ -12,19 +12,27 @@ class OrderRepository {
     transform(order){
 
         order.href = `/orders/${order._id}`;
-        order.pizzeria.href = `/pizzerias/${order.pizzeria}`;
-        order.customer.href = `/customers/${order.customer}`;
+        let piz = order.pizzeria;
+        let cus = order.customer;
+        delete order.pizzeria;
+        delete order.customer;
+        order.pizzeria = {};
+        order.customer = {};
+        order.pizzeria.href = `/pizzerias/${piz}`;
+        order.customer.href = `/customers/${cus}`;
 
         let sub = 0;
         order.pizzas.forEach(p => {
             sub += p.price;
+            delete p._id;
         });
-        order.subTotal = sub;
-        order.subTotal.toFixed(3);
+        
+        order.subTotal = parseFloat(sub.toFixed(3));
+        order.taxeRates = TAXRATE;
+        order.taxes = parseFloat((order.subTotal * TAXRATE).toFixed(3))
+        order.total =  parseFloat((order.subTotal + order.taxes).toFixed(3))
         
         delete order._id;
-        delete order.pizzeria;
-        delete order.customer;
 
         return order;
     }
