@@ -11,7 +11,7 @@ const customerSchema = mongoose.Schema({
         lat: { type:Number, required:true, min:-1000, max:1000 }
     },
     phone: { type:String, maxLength:16 },
-    birthday: { type:String, required:true },
+    birthday: { type:Date, required:true },
     referalCode:String
 }, {
     collection: 'customers'
