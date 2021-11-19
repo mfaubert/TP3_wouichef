@@ -5,6 +5,7 @@ import database from './libs/database.js';
 import errorMiddleware from './middlewares/errors.js';
 
 import orderRoutes from './routes/order.routes.js';
+import customerRoutes from './routes/customer.routes.js'
 
 database();
 
@@ -18,6 +19,7 @@ app.use((req,res,next) => {
 });
 
 app.use('/orders', orderRoutes);
+app.use('/customers', customerRoutes);
 
 app.use(errorMiddleware);
 
