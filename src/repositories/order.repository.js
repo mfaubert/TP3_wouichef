@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import Order from '../models/order.model.js';
+import pizzeriaRepository from './pizzeria.repository.js';
 import objectToDotNotation from '../libs/objectToDotNotation.js';
 const TAXRATE = 0.0087;
 
@@ -9,9 +10,16 @@ class OrderRepository {
         return Order.find(filter);
     }
 
-    transform(order){
+    transform(order, transformOptions = {}) {
+
+        if (transformOptions.embed && transformOptions.embed.pizzeria) {
+            order.pizzeria = pizzeriaRepository.transform(order.pizzeria, transformOptions);
+        } else {
+            order.pizzeria = { href: `/pizzerias/${order.pizzeria}` };
+        }
 
         order.href = `/orders/${order._id}`;
+
         let piz = order.pizzeria;
         let cus = order.customer;
         delete order.pizzeria;
@@ -26,12 +34,12 @@ class OrderRepository {
             sub += p.price;
             delete p._id;
         });
-        
+
         order.subTotal = parseFloat(sub.toFixed(3));
         order.taxeRates = TAXRATE;
         order.taxes = parseFloat((order.subTotal * TAXRATE).toFixed(3))
-        order.total =  parseFloat((order.subTotal + order.taxes).toFixed(3))
-        
+        order.total = parseFloat((order.subTotal + order.taxes).toFixed(3))
+
         delete order._id;
 
         return order;
