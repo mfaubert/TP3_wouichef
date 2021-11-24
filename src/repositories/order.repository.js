@@ -6,8 +6,26 @@ const TAXRATE = 0.0087;
 
 class OrderRepository {
 
-    retrieveAll(filter) {
-        return Order.find(filter);
+    retrieveAll(retrieveOptions) {
+        let retrieveQuery = '';
+
+        if(retrieveOptions.topping){
+            const filterFixed={
+                'pizzas.toppings':{$in:retrieveOptions.topping}
+            }
+
+            retrieveQuery = Order.find(filterFixed)
+                .limit(retrieveOptions.limit)
+                .sort('-orderDate')
+        }else{
+            retrieveQuery = Order.find()
+                .limit(retrieveOptions.limit)
+                .sort('-orderDate')
+        }
+
+        const countQuery = Order.countDocuments();
+        return Promise.all([retrieveQuery, countQuery]);
+
     }
 
     transform(order, transformOptions = {}) {
@@ -20,13 +38,9 @@ class OrderRepository {
 
         order.href = `/orders/${order._id}`;
 
-        let piz = order.pizzeria;
         let cus = order.customer;
-        delete order.pizzeria;
         delete order.customer;
-        order.pizzeria = {};
         order.customer = {};
-        order.pizzeria.href = `/pizzerias/${piz}`;
         order.customer.href = `/customers/${cus}`;
 
         let sub = 0;
