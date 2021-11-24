@@ -1,11 +1,15 @@
 import dayjs from "dayjs";
-import customer from '../models/customer.model.js';
+import Customer from '../models/customer.model.js';
 import objectToDotNotation from '../libs/objectToDotNotation.js';
 
 class CustomerRepository {
 
-    retrieveAll(filter) {
-        return customer.find(filter);
+    retrieveAll(retrieveOptions, filter) {
+
+        const retrieveQuery = Customer.find(filter).skip(retrieveOptions.skip).limit(retrieveOptions.limit).sort('birthday');
+        const countQuery = Customer.estimatedDocumentCount();
+
+        return Promise.all([retrieveQuery, countQuery]);
     }
 
     transform(customer){
