@@ -9,15 +9,15 @@ class CustomerValidators {
 
         return [
             body('planet').optional()
-                .isin(PLANET_NAMES).withMessage('Doit etre dans le tableau de constantes'),
+                .isIn(PLANET_NAMES).withMessage('Doit etre dans le tableau de constantes'),
             body('coord.lat').optional()
                 .isFloat({min:-1000,max:1000}).withMessage('la latitude doit etre entre -1000 et 1000'),
             body('coord.lon').optional()
                 .isFloat({min:-1000,max:1000}).withMessage('la longitude doit etre entre -1000 et 1000'),
             body('chef.ancestor').optional()
-                .isin(MONSTER_ANCESTORS).withMessage('Doit etre dans le tableau de constantes'),
+                .isIn(MONSTER_ANCESTORS).withMessage('Doit etre dans le tableau de constantes'),
             body('chef.speciality').optional()
-                .isin(PIZZA_TOPPINGS).withMessage('Doit etre dans le tableau de constantes'),
+                .isIn(PIZZA_TOPPINGS).withMessage('Doit etre dans le tableau de constantes'),
 
         ];
 
@@ -38,4 +38,4 @@ class CustomerValidators {
 
 }
 
-export default new PlanetValidators();
+export default new PizzeriaValidators();

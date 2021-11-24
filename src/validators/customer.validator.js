@@ -9,7 +9,7 @@ class CustomerValidators {
 
         return [
             body('planet').optional()
-                .isin(PLANET_NAMES).withMessage('Doit etre dans le tableau de constante planètes'),
+                .isIn(PLANET_NAMES).withMessage('Doit etre dans le tableau de constante planètes'),
             body('coord.lat').optional()
                 .isFloat({min:-1000,max:1000}).withMessage('la latitude doit etre entre -1000 et 1000'),
             body('coord.lon').optional()
@@ -37,4 +37,4 @@ class CustomerValidators {
 
 }
 
-export default new PlanetValidators();
+export default new CustomerValidators();
