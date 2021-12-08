@@ -11,6 +11,7 @@ const router = express.Router();
 class PizzeriaRoutes {
     constructor() {
         router.get('/:idPizzeria', this.getOne);
+        router.post('/', this.post);
     }
 
     async getOne(req, res, next) {
@@ -41,6 +42,28 @@ class PizzeriaRoutes {
             // 500 Internal error         
             return next(err);
         }
+    }
+
+    async post(req, res, next) {
+        const newPizzeria = req.body;
+        
+        try  {
+            let pizzeriaAdded = await pizzeriaRepository.create(newPizzeria);
+            
+            pizzeriaAdded = pizzeriaAdded.toObject({getters:false, virtuals:false});
+            pizzeriaAdded = pizzeriaRepository.transform(pizzeriaAdded);
+
+            if(req.query._body === 'false') {
+                res.status(204).end()
+            } else {
+                res.status(201).json(pizzeriaAdded);
+            }
+
+        } catch(err) {
+            return next(err);
+        }
+
+        
     }
 }
 

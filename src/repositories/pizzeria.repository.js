@@ -14,6 +14,10 @@ class PizzeriaRepository {
         return retrieveQuery;
     }
 
+    create(pizzeria) {
+        return Pizzeria.create(pizzeria);
+    }
+
     transform(pizzeria, transformOptions = {}) {
 
         if (transformOptions) {

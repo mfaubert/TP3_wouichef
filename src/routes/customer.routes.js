@@ -82,15 +82,23 @@ class CustomerRoutes {
 
     async getOne(req, res, next) {
         const idCustomer = req.params.customerId;
+        const retrieveOptions = {};
+
+        if(req.query.embed && req.query.embed === 'orders') {
+            retrieveOptions.orders = true;
+        }
 
         try {
-            let customer = await customerRepository.retrieveById(idCustomer);
+            let customer = await customerRepository.retrieveById(idCustomer,retrieveOptions);
 
             if (customer) {
-                res.status(200).json(customer);
+
+                    customer = customer.toObject({getters:false, virtuals:true});
+                    customer = customerRepository.transform(customer);
+                    res.status(200).json(customer);
+
             } else {
-                //2. J'ai pas de planète
-                return next(HttpError.NotFound(`La planète ${idCustomer} n'existe pas`));
+                return next(HttpError.NotFound(`Le customer ${idCustomer} n'existe pas`));
             }
         } catch (err) {
             return next(err);

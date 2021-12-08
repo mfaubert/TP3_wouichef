@@ -12,8 +12,14 @@ class CustomerRepository {
         return Promise.all([retrieveQuery, countQuery]);
     }
 
-    retrieveById(idCustomer) {
-        return Customer.findById(idCustomer)
+    retrieveById(idCustomer,retrieveOptions = {}) {
+        const retrieveQuery = Customer.findById(idCustomer);
+
+        if(retrieveOptions.orders) {
+            retrieveQuery.populate('orders');
+        }
+
+        return retrieveQuery;
     }
 
     update(idCustomer, customerModifs) {
