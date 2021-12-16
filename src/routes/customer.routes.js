@@ -39,8 +39,6 @@ class CustomerRoutes {
             const pageCount = Math.ceil(documentCount / req.query.limit);
             const hasNextPage = paginate.hasNextPages(req)(pageCount);
 
-            // Pour obtenir les -1, current, +1
-            // MF: La fonction retourne une autre fonction, on l'appelle directement
             const pageArray = paginate.getArrayPages(req)(3, pageCount, req.query.page);
 
             const response = {
@@ -103,8 +101,6 @@ class CustomerRoutes {
         }
     }
 
-    // Put en sql est comme un delete suivi d'un insert
-    // Si la ressource n'existe pas encore, on ne fait qu'un insert (create)
     async put(req, res, next) {
 
         try {
