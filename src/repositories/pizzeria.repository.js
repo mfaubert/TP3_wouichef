@@ -29,10 +29,12 @@ class PizzeriaRepository {
             }
         }
 
-        pizzeria.href = `/pizzerias/${pizzeria._id}`;
+        pizzeria.href = `${process.env.BASE_URL}/pizzerias/${pizzeria._id}`;
         pizzeria.lightspeed = "[" + pizzeria.planet + "]@(" + pizzeria.coord.lat + ";" + pizzeria.coord.lon + ")";
-        
+
         delete pizzeria._id;
+        delete pizzeria.id;
+
         return pizzeria;
     }
 

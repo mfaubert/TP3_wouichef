@@ -9,15 +9,15 @@ class OrderRepository {
     retrieveAll(retrieveOptions) {
         let retrieveQuery = '';
 
-        if(retrieveOptions.topping){
-            const filterFixed={
-                'pizzas.toppings':{$in:retrieveOptions.topping}
+        if (retrieveOptions.topping) {
+            const filterFixed = {
+                'pizzas.toppings': { $in: retrieveOptions.topping }
             }
 
             retrieveQuery = Order.find(filterFixed)
                 .limit(retrieveOptions.limit)
                 .sort('-orderDate')
-        }else{
+        } else {
             retrieveQuery = Order.find()
                 .limit(retrieveOptions.limit)
                 .sort('-orderDate')
@@ -33,15 +33,15 @@ class OrderRepository {
         if (transformOptions.embed && transformOptions.embed.pizzeria) {
             order.pizzeria = pizzeriaRepository.transform(order.pizzeria, transformOptions);
         } else {
-            order.pizzeria = { href: `/pizzerias/${order.pizzeria}` };
+            order.pizzeria = { href: `${process.env.BASE_URL}/pizzerias/${order.pizzeria}` };
         }
 
-        order.href = `/orders/${order._id}`;
+        order.href = `${process.env.BASE_URL}/orders/${order._id}`;
 
         let cus = order.customer;
         delete order.customer;
         order.customer = {};
-        order.customer.href = `/customers/${cus}`;
+        order.customer.href = `${process.env.BASE_URL}/customers/${cus}`;
 
         let sub = 0;
         order.pizzas.forEach(p => {

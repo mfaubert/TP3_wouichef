@@ -1,4 +1,5 @@
 import express from 'express';
+import HttpError from 'http-errors';
 import paginate from 'express-paginate';
 
 import customerRepository from '../repositories/customer.repository.js';
@@ -47,16 +48,13 @@ class CustomerRoutes {
                     hasNextPage: hasNextPage,
                     page: req.query.page,
                     limit: req.query.limit,
-                    skip: req.skip,
                     totalPages: pageCount,
                     totalDocuments: documentCount,
                 },
                 _links: {
-                    first: `/customers?page=1&limit=${req.query.limit}`,
                     prev: pageArray[0].url,
                     self: pageArray[1].url,
                     next: pageArray[2].url,
-                    last: `/customers?page=${pageCount}&limit=${req.query.limit}`
                 },
                 data: customers
             }
@@ -84,18 +82,18 @@ class CustomerRoutes {
         const idCustomer = req.params.customerId;
         const retrieveOptions = {};
 
-        if(req.query.embed && req.query.embed === 'orders') {
+        if (req.query.embed && req.query.embed === 'orders') {
             retrieveOptions.orders = true;
         }
 
         try {
-            let customer = await customerRepository.retrieveById(idCustomer,retrieveOptions);
+            let customer = await customerRepository.retrieveById(idCustomer, retrieveOptions);
 
             if (customer) {
 
-                    customer = customer.toObject({getters:false, virtuals:true});
-                    customer = customerRepository.transform(customer);
-                    res.status(200).json(customer);
+                customer = customer.toObject({ getters: false, virtuals: true });
+                customer = customerRepository.transform(customer);
+                res.status(200).json(customer);
 
             } else {
                 return next(HttpError.NotFound(`Le customer ${idCustomer} n'existe pas`));
@@ -114,16 +112,20 @@ class CustomerRoutes {
             console.log(customer);
 
             if (!customer) {
+                // 404 - Not Found
                 return next(HttpError.NotFound(`Le client avec l'identifiant ${req.params.customerId} n'existe pas`));
             }
 
             if (req.query._body === 'false') {
-                res.status(200).end();
+                // 204 - No Content
+                res.status(204).end();
             } else {
-                res.status(200).json(customer);
+                // 201 - Created
+                res.status(201).json(customer);
             }
 
         } catch (err) {
+            // 500
             return next(err);
         }
     }

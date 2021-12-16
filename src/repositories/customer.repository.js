@@ -12,10 +12,10 @@ class CustomerRepository {
         return Promise.all([retrieveQuery, countQuery]);
     }
 
-    retrieveById(idCustomer,retrieveOptions = {}) {
+    retrieveById(idCustomer, retrieveOptions = {}) {
         const retrieveQuery = Customer.findById(idCustomer);
 
-        if(retrieveOptions.orders) {
+        if (retrieveOptions.orders) {
             retrieveQuery.populate('orders');
         }
 
@@ -30,7 +30,7 @@ class CustomerRepository {
 
     transform(customer) {
 
-        customer.href = `/customers/${customer._id}`;
+        customer.href = `${process.env.BASE_URL}/customers/${customer._id}`;
 
         customer.age = parseFloat(((dayjs() - customer.birthday) / 31536000000).toFixed(0));
         customer.phone = "[" + customer.phone.substring(0, 4) + "]" + customer.phone.substring(4, 8) + "-" + customer.phone.substring(8, 14) + "@" + customer.phone.substring(14, 16);

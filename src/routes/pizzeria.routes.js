@@ -6,8 +6,6 @@ import pizzeriaRepository from '../repositories/pizzeria.repository.js';
 
 const router = express.Router();
 
-// A: Obtenir une pizzeria spécifique
-// avec orders embedded
 class PizzeriaRoutes {
     constructor() {
         router.get('/:idPizzeria', this.getOne);
@@ -46,24 +44,24 @@ class PizzeriaRoutes {
 
     async post(req, res, next) {
         const newPizzeria = req.body;
-        
-        try  {
+
+        try {
             let pizzeriaAdded = await pizzeriaRepository.create(newPizzeria);
-            
-            pizzeriaAdded = pizzeriaAdded.toObject({getters:false, virtuals:false});
+
+            pizzeriaAdded = pizzeriaAdded.toObject({ getters: false, virtuals: false });
             pizzeriaAdded = pizzeriaRepository.transform(pizzeriaAdded);
 
-            if(req.query._body === 'false') {
+            if (req.query._body === 'false') {
                 res.status(204).end()
             } else {
                 res.status(201).json(pizzeriaAdded);
             }
 
-        } catch(err) {
+        } catch (err) {
             return next(err);
         }
 
-        
+
     }
 }
 
